@@ -49,7 +49,7 @@ function SignUp() {
             placeholder="Enter R-password"
             className="border border-gray-300 rounded-[10px] p-2 sm:p-3 focus:border-pink-500 focus:ring-2 focus:ring-pink-300 focus:outline-none"
           />
-          <button class="px-6 py-3 mt-4 bg-gradient-to-r from-pink-500 to-sky-300 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transform hover:sc transition-all duration-300">
+          <button className="px-6 py-3 mt-4 bg-gradient-to-r from-pink-500 to-sky-300 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transform hover:sc transition-all duration-300">
             Sign Up
           </button>
         </form>
