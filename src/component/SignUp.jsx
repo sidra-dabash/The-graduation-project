@@ -1,4 +1,5 @@
 function SignUp() {
+  
   return (
     <>
       <div className="flex justify-center items-center min-h-screen bg-[#8E2571]">
