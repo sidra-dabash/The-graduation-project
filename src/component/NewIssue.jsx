@@ -10,11 +10,11 @@ function NewIssue() {
             className="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-xl lg:w-[550px] md:h-[500px]"
           >
             <div>
-              <h1 className="text-center font-bold text-4xl mt-6 text-pink-400">
+              <h1 className="text-center font-bold text-4xl mt-6 text-[#8E2571]">
                 New Issue
               </h1>
             </div>
-            <label htmlFor="Title" className="text-pink-500 font-bold">
+            <label htmlFor="Title" className="text-[#8E2571] font-bold">
               Title
             </label>
             <input
@@ -23,7 +23,7 @@ function NewIssue() {
               id="Title"
               className="border border-gray-300 rounded-[10px] p-3 focus:ring-2 focus:ring-pink-500 focus:outline-none"
             />
-            <label htmlFor="Description" className="text-pink-500 font-bold">
+            <label htmlFor="Description" className="text-[#8E2571] font-bold">
               Description
             </label>
             <input
@@ -33,7 +33,7 @@ function NewIssue() {
               className="border border-gray-300 rounded-[10px] p-3 focus:ring-2 focus:ring-pink-500 focus:outline-none"
             />
             <div className="flex flex-col w-64 space-y-2 relative">
-              <label htmlFor="status" className="font-bold text-pink-500">
+              <label htmlFor="status" className="font-bold text-[#8E2571]">
                 Status
               </label>
               <div className="relative">

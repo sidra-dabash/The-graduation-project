@@ -11,7 +11,7 @@ function App() {
           {/* <SignUp/> */}
           {/* <Home/> */}
           {/* <NewIssue/> */}
-          <EditIssue/>
+          {/* <EditIssue/> */}
     </>
   )
 }

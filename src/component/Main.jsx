@@ -3,12 +3,12 @@ function Main() {
 
   return (
     <>
-      <div className="bg-pink-50 mt-8 px-4 py-10 max-w-[1000px] mx-auto ">
+      <div className="bg-[#8E2571] mt-8 px-4 py-10 max-w-[1000px] mx-auto ">
         {/* Header Section */}
         <div className="flex justify-center items-center gap-5">
-          <div className="flex justify-between bg-pink-200 w-[1000px] px-4 py-3 rounded-lg">
+          <div className="flex justify-between bg-[#edaedb] w-[1000px] px-4 py-3 rounded-lg">
             {headers.map((header) => (
-              <span key={header} className="font-bold text-white text-lg">
+              <span key={header} className="font-bold text-[#740556] text-lg">
                 {header}
               </span>
             ))}
@@ -20,7 +20,7 @@ function Main() {
           {headers.map((header) => (
             <div
               key={header}
-              className="bg-pink-300 w-[150px] h-[200px] flex justify-center items-center rounded-lg shadow"
+              className="bg-[#edaedb] w-[150px] h-[200px] flex justify-center items-center rounded-lg shadow"
             >
               {/* Placeholder for content */}
               <span className="text-white font-semibold"></span>
