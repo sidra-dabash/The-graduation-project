@@ -18,8 +18,8 @@ function App() {
 
   return (
     <>
-          {/* <Login /> */}
-          <SignUp/>
+          <Login />
+          {/* <SignUp/> */}
           {/* <Home/> */}
           {/* <NewIssue/> */}
           {/* <EditIssue/> */}
