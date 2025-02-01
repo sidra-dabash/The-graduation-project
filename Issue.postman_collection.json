@@ -1,0 +1,122 @@
+{
+	"info": {
+		"_postman_id": "3aeca27e-560a-4b2c-91fa-59610f1ef79b",
+		"name": "Issue",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "25363916"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"identifier\": \"foobar\",\r\n  \"password\": \"Test1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:1337/api/auth/local/".
+				
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"foobar0\",\r\n  \"email\": \"test@test.com\",\r\n  \"password\": \"Test1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:1337/api/auth/local/register"
+			},
+			"response": []
+		},
+		{
+			"name": "get issues",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:1337/api/issues"
+			},
+			"response": []
+		},
+		{
+			"name": "create issue",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"data\": {\r\n    \"title\": \"new issue2\",\r\n    \"description\": \"a problem with my new project2\",\r\n    \"userId\": \"1\",\r\n    \"imageUrl\": \"string\",\r\n    \"counter\": 0,\r\n    \"issueStatus\": \"Open\",\r\n    \"username\": \"test\",\r\n    \"locale\": \"string\"\r\n  }\r\n  \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:1337/api/issues"
+			},
+			"response": []
+		},
+		{
+			"name": "edit issue",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"data\": {\r\n        \r\n        \"counter\": 1,\r\n        \"issueStatus\": \"Closed\"\r\n        \r\n    },\r\n    \"meta\": {}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:1337/api/issues/gzqibaz2mqihkqshyyb7u2ux"
+			},
+			"response": []
+		},
+		{
+			"name": "get issue by documentID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"data\": {\r\n        \r\n        \"counter\": 1,\r\n        \"issueStatus\": \"Closed\"\r\n        \r\n    },\r\n    \"meta\": {}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:1337/api/issues/gzqibaz2mqihkqshyyb7u2ux"
+			},
+			"response": []
+		},
+		{
+			"name": "delete issue",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:1337/api/issues/llahlvk40wxvw2l8xa7up3cq"
+			},
+			"response": []
+		}
+	]
+}
