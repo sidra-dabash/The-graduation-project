@@ -9,23 +9,25 @@ function Login() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  const handlSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccessMessage("");
     try {
       const response = await axios.post(
-        "http://localhost:1337/api/auth/local/",
+        "http://localhost:1337/api/auth/local",
         {
           identifier: formData.email,
           password: formData.password,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
         }
       );
       console.log("login:", response.data);
       // حفظ التوكن
       const token = response.data.jwt;
       localStorage.setItem("token", token);
-      alert("login successful");
       setSuccessMessage("Login successful");
     } catch (error) {
       console.error("Error login:", error);
@@ -40,7 +42,7 @@ function Login() {
     <>
       <div className="flex justify-center items-center min-h-screen bg-[#8E2571]">
         <form
-          onSubmit={handlSubmit}
+          onSubmit={handleSubmit}
           action=""
           className="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-xl lg:w-[550px] md:h-[500px] "
         >
@@ -80,7 +82,7 @@ function Login() {
               setFormData({ ...formData, password: e.target.value })
             }
           />
-          <button className="px-6 py-3 bg-gradient-to-r from-pink-500 to-sky-300 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transform hover:sc transition-all duration-300 mt-4">
+          <button className="px-6 py-3 bg-gradient-to-r from-pink-500 to-sky-300 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 mt-4">
             Login
           </button>
         </form>

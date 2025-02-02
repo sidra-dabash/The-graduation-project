@@ -51,17 +51,25 @@ function SignUp() {
         {
           username: formData.username,
           email: formData.email,
-          password: formData.password, 
+          password: formData.password,
         },
         {
           headers: { "Content-Type": "application/json" },
         }
       );
 
+      // في حال نجاح الطلب
       if (response.data.jwt) {
         setSuccessMessage("Registration completed successfully!");
         console.log("User Registered:", response.data);
         localStorage.setItem("jwt", response.data.jwt);
+        //تفريغ الفورم عند ارسال البيانات
+        setFormData({
+          username: "",
+          email: "",
+          password: "",
+          Rpassword: "",
+        });
       }
     } catch (error) {
       setError(
@@ -81,7 +89,7 @@ function SignUp() {
           Sign Up
         </h1>
 
-        {error && <p className="text-red-500 text-center">{error}</p>}
+        {error && <p className="text-red-500 text-center relative h-6">{error}</p>}
         {successMessage && (
           <p className="text-green-500 text-center">{successMessage}</p>
         )}
@@ -90,6 +98,7 @@ function SignUp() {
           Username
         </label>
         <input
+          value={formData.username}
           type="text"
           id="username"
           placeholder="Enter your username"
@@ -103,6 +112,7 @@ function SignUp() {
           Email
         </label>
         <input
+          value={formData.email}
           type="email"
           id="email"
           placeholder="Enter your email"
@@ -114,6 +124,7 @@ function SignUp() {
           Password
         </label>
         <input
+          value={formData.password}
           type="password"
           id="password"
           placeholder="Enter your password"
@@ -127,6 +138,7 @@ function SignUp() {
           Confirm Password
         </label>
         <input
+          value={formData.Rpassword}
           type="password"
           id="Rpassword"
           placeholder="Re-enter your password"
@@ -136,7 +148,7 @@ function SignUp() {
           }
         />
 
-        <button className="px-6 py-3 mt-4 bg-gradient-to-r from-pink-500 to-sky-300 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transform transition-all duration-300">
+        <button className="px-6 py-3 bg-gradient-to-r from-pink-500 to-sky-300 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transform hover:sc transition-all duration-300 mt-4">
           Sign Up
         </button>
       </form>
