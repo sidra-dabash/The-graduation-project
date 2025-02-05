@@ -6,6 +6,7 @@ import SignUp from "./component/SignUp";
 import axios from "axios";
 import { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Header from "./component/Header";
 
 function App() {
   useEffect(() => {
@@ -21,20 +22,15 @@ function App() {
 
   return (
     <>
-    {/* <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signUp" element={<SignUp />} />
-        <Route path="/newIssue" element={<NewIssue />} />
-        <Route path="/editIssue" element={<EditIssue />} />
-      </Routes>
-    </Router> */}
-    <Home/>
-    {/* <EditIssue/> */}
-    {/* <NewIssue/> */}
-    {/* <Login/> */}
-    {/* <SignUp/> */}
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/add-issue" element={<NewIssue />} />
+          <Route path="/edit-issue" element={<EditIssue />} />
+        </Routes>
+      </Router>
     </>
   );
 }
