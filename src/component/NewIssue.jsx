@@ -51,7 +51,7 @@ function NewIssue({ onAddNewIssue }) {
     title: "",
     description: "",
     status: "",
-    imageUrl: "",
+    // imageUrl: "",
   });
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const handleChange = (e) => {
@@ -84,6 +84,7 @@ function NewIssue({ onAddNewIssue }) {
         title: formData.title,
         description: formData.description,
         status: formData.status,
+        count: 0,
       };
       const response = await axios.post(API_URL, { data: newIssue });
       // جلب البيانات الجديدة من الاستجابة

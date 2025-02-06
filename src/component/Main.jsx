@@ -5,17 +5,17 @@ import { Link } from "react-router-dom";
 import NewIssue from "./NewIssue";
 import EditIssue from "./EditIssue";
 
-function Card({ title, desc, imageUrl, status, onEdit, onDelete }) {
+function Card({ title, description, status,count, onEdit, onDelete , onIncrease,onDecrease}) {
   return (
-    <div className="bg-[#edaedb] w-full flex flex-row justify-between items-center rounded-lg shadow p-4 mb-4">
-      <img
+    <div className="bg-[#edaedb] w-full flex flex-row justify-between items-center rounded-lg shadow p-4 mb-4 mr-4">
+      {/* <img
         src={imageUrl}
         alt={title}
         className="w-24 h-24 object-cover rounded"
-      />
-      <div className="flex justify-around flex-1 mx-4">
+      /> */}
+      <div className="flex justify-between flex-1 mx-4">
         <h3 className="text-[#740556] font-bold text-lg">{title}</h3>
-        <p className="text-[#740556]">{desc}</p>
+        <p className="text-[#740556]">{description}</p>
         <p
           className={`font-semibold ${
             status === "open"
@@ -27,7 +27,7 @@ function Card({ title, desc, imageUrl, status, onEdit, onDelete }) {
         >
           {status}
         </p>
-      </div>
+      
       <div className="flex  items-center gap-2">
         <Link to={"/edit-issue"}>
       <button onClick={onEdit} className="text-green-500 hover:underline">
@@ -38,32 +38,66 @@ function Card({ title, desc, imageUrl, status, onEdit, onDelete }) {
           Delete
         </button>
       </div>
+
+      <div className="flex items-center gap-2">
+          <button onClick={onDecrease} className="px-2 py-1 bg-red-500 text-white rounded">-</button>
+          <span className="font-bold text-lg">{count}</span>
+          <button onClick={onIncrease} className="px-2 py-1 bg-green-500 text-white rounded">+</button>
+        </div>
+
+    </div>
     </div>
   );
 }
 
 function Main({ issue }) {
-  const headers = ["Title", "Desc", "Status", "User", "Count"];
+  const headers = ["Title", "description", "Status", "User", "Count"];
   const [cardsData, setCardsData] = useState([
     {
       title: "Card 1",
-      desc: "Description 1",
-      imageUrl: "https://via.placeholder.com/150",
+      description: "Description 1",
+      // imageUrl: "https://via.placeholder.com/150",
       status: "open",
+      count: 0,
     },
     {
       title: "Card 2",
-      desc: "Description 2",
-      imageUrl: "https://via.placeholder.com/150",
+      description: "Description 2",
+      // imageUrl: "https://via.placeholder.com/150",
       status: "closed",
+      count: 0,
     },
     {
       title: "Card 3",
-      desc: "Description 3",
-      imageUrl: "https://via.placeholder.com/150",
+      description: "Description 3",
+      // imageUrl: "https://via.placeholder.com/150",
       status: "inprogress",
+      count: 0,
+    },
+    {
+      title: "Card 4",
+      description: "Description 4",
+      // imageUrl: "https://via.placeholder.com/150",
+      status: "inprogress",
+      count: 0,
     },
   ]);
+
+  const handleIncrease = (index) => {
+    const updatedCards = [...cardsData];
+    updatedCards[index].count += 1;
+    setCardsData(updatedCards);
+  };
+
+  const handleDecrease = (index) => {
+    const updatedCards = [...cardsData];
+    // التاكد من العدد اكبر من الصفر كي يتم انقاصه
+    if (updatedCards[index].count > 0) {
+      updatedCards[index].count -= 1;
+      setCardsData(updatedCards);
+    }
+  };
+
   const [editingIssue, setEditingIssue] = useState(null);
 
   const handleEdit = (index) => {
@@ -99,11 +133,14 @@ function Main({ issue }) {
             <Card
               key={index}
               title={card.title}
-              desc={card.desc}
-              imageUrl={card.imageUrl}
+              description={card.description}
+              // imageUrl={card.imageUrl}
               status={card.status}
               onEdit={() => handleEdit(index)}
               onDelete={() => handleDelete(index)}
+              onIncrease={() => handleIncrease(index)}
+              onDecrease={() => handleDecrease(index)}
+              count={card.count}
             />
           ))}
         </div>
