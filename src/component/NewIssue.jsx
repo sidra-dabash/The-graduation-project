@@ -1,7 +1,6 @@
 import Header from "./Header";
 import { useState } from "react";
 import axios from "axios";
-import { title } from "framer-motion/client";
 
 const API_URL = "http://localhost:1337/api/issues";
 const AlertMessage = ({ type, message, onClose }) => {
@@ -80,15 +79,23 @@ function NewIssue({ onAddNewIssue }) {
     }
     try {
       // ارسال البيانات الى الapi
-      const newIssue = {
-        title: formData.title,
-        description: formData.description,
-        status: formData.status,
-        count: 0,
+      const data = {
+        data: {
+          title: formData.title,
+          description: formData.description,
+          issueStatus: formData.status,
+          userId: "1",
+          imageUrl: "string",
+          counter: 0,
+          username: "test",
+          locale: "string",
+        },
       };
-      const response = await axios.post(API_URL, { data: newIssue });
+      const response = await axios.post(API_URL, data);
       // جلب البيانات الجديدة من الاستجابة
       const addedIssue = response.data.data;
+      console.log("onAddNewIssue:",onAddNewIssue);
+      
       onAddNewIssue(addedIssue);
       showMessage("success", "issue added successfully");
       setFormData({ title: "", description: "", status: "" });
@@ -165,9 +172,9 @@ function NewIssue({ onAddNewIssue }) {
                   <option value="" disabled>
                     Select an option
                   </option>
-                  <option value="open">Open</option>
-                  <option value="closed">Closed</option>
-                  <option value="in-progress">In Progress</option>
+                  <option value="Open">Open</option>
+                  <option value="Closed">Closed</option>
+                  <option value="In-progress">In Progress</option>
                 </select>
                 <span className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-black">
                   ▼

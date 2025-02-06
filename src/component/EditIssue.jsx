@@ -6,7 +6,7 @@ function EditIssue({ issue, onClose, onSave }) {
   const [formData, setFormData] = useState({
     title: issue ? issue.title : "",
     description: issue ? issue.description : "",
-    status: issue ? issue.status : "pending",
+    issueStatus: issue ? issue.issueStatus : "Open",
   });
 
   const handleChange = (e) => {
@@ -22,15 +22,15 @@ function EditIssue({ issue, onClose, onSave }) {
     setFormData({
       title: "",
       description: "",
-      status: "pending",
+      issueStatus: "Open",
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const updateIssue = { ...formData, id: issue.id };
+    const updateIssue = { ...formData, documentId: issue.documentId };
     try {
-      const response = await axios.put(`${API_URL}/${issue.id}`, updateIssue);
+      const response = await axios.put(`${API_URL}/${issue.documentId}`, updateIssue);
       if (response.status === 200) {
         onSave(updateIssue);
         onClose();
@@ -88,7 +88,7 @@ function EditIssue({ issue, onClose, onSave }) {
                   name="status"
                   id="status"
                   className="bg-pink-100 text-black px-4 py-2 rounded-lg appearance-none w-full focus:outline-none focus:ring-2 focus:ring-gray-500"
-                  value={formData.status}
+                  value={formData.issueStatus}
                   onChange={handleChange}
                   required
                 >
