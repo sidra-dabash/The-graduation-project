@@ -94,8 +94,7 @@ function NewIssue({ onAddNewIssue }) {
       const response = await axios.post(API_URL, data);
       // جلب البيانات الجديدة من الاستجابة
       const addedIssue = response.data.data;
-      console.log("onAddNewIssue:",onAddNewIssue);
-      
+      console.log("onAddNewIssue:", onAddNewIssue);
       onAddNewIssue(addedIssue);
       showMessage("success", "issue added successfully");
       setFormData({ title: "", description: "", status: "" });

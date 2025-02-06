@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "./Header";
+
 const API_URL = "http://localhost:1337/api/issues";
 function EditIssue({ issue, onClose, onSave }) {
   const [formData, setFormData] = useState({
@@ -8,7 +9,7 @@ function EditIssue({ issue, onClose, onSave }) {
     description: issue ? issue.description : "",
     issueStatus: issue ? issue.issueStatus : "Open",
   });
-
+  const [isLoading, setIsLoading] = useState(false);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -29,8 +30,13 @@ function EditIssue({ issue, onClose, onSave }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const updateIssue = { ...formData, documentId: issue.documentId };
+    setIsLoading(true);
+
     try {
-      const response = await axios.put(`${API_URL}/${issue.documentId}`, updateIssue);
+      const response = await axios.put(
+        `${API_URL}/${issue.documentId}`,
+        updateIssue
+      );
       if (response.status === 200) {
         onSave(updateIssue);
         onClose();
@@ -39,7 +45,12 @@ function EditIssue({ issue, onClose, onSave }) {
         alert("Error: " + response.statusText);
       }
     } catch (error) {
-      alert("Error updating issue: " + (error.response ? error.response.data : error.message));
+      alert(
+        "Error updating issue: " +
+          (error.response ? error.response.data : error.message)
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -92,7 +103,7 @@ function EditIssue({ issue, onClose, onSave }) {
                   onChange={handleChange}
                   required
                 >
-                  <option value="" disabled>
+                  <option value="pending" disabled>
                     Select an option
                   </option>
                   <option value="open">Open</option>
@@ -107,8 +118,9 @@ function EditIssue({ issue, onClose, onSave }) {
             <button
               type="submit"
               className="p-2 mt-3 bg-gradient-to-r from-pink-500 to-sky-300 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+              disabled={isLoading}
             >
-              Save
+              {isLoading ? "Saving..." : "Save"}
             </button>
           </form>
         </div>

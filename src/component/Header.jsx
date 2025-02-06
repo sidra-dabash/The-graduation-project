@@ -15,10 +15,7 @@ function Header({ onAddNewIssue }) {
             Home
           </Link>
           <Link to="/add-issue">
-            <button
-              // onClick={handleAddIssueClick}
-              className="px-6 py-3 bg-gradient-to-r from-pink-500 to-sky-300 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-            >
+            <button className="px-6 py-3 bg-gradient-to-r from-pink-500 to-sky-300 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
               Add Issue
             </button>
           </Link>
