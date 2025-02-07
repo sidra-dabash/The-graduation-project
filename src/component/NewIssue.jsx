@@ -13,7 +13,7 @@ const AlertMessage = ({ type, message, onClose }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       {/* Modal Container */}
       <div
-        className={`p-6 rounded-lg border-4 shadow-lg max-w-xl w-full ${alertStyles[type]}`}
+       className={`p-6 rounded-lg border-4 shadow-lg max-w-xl w-full ${alertStyles[type]}`}
       >
         {/* Modal Header */}
         <div className="flex justify-between items-center mb-4">
@@ -85,7 +85,7 @@ function NewIssue({ onAddNewIssue }) {
           description: formData.description,
           issueStatus: formData.status,
           userId: "1",
-          imageUrl: "string",
+          // imageUrl: "string",
           counter: 0,
           username: "test",
           locale: "string",

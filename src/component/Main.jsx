@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import NewIssue from "./NewIssue";
 import EditIssue from "./EditIssue";
-
 function Card({
   title,
   description,
@@ -119,6 +118,7 @@ function Main({ issues, setIssues }) {
       setIssues(updatedCards);
     }
   };
+
   const [editingIssue, setEditingIssue] = useState(null);
   const handleEdit = (index) => {
     // تحديد المشكلة التيسيتم تعديلها
@@ -130,13 +130,14 @@ function Main({ issues, setIssues }) {
     const updatedCards = issues.filter((_, idx) => idx !== index);
     setIssues(updatedCards);
   };
-  const handleSaveEdit = (updatedIssue) => {
-    const updatedCards = cardsData.map((card) =>
-      card.id === updatedIssue.id ? updatedIssue : card
-    );
-    setCardsData(updatedCards);
-    setEditingIssue(null);
-  };
+
+  // const handleSaveEdit = (updatedIssue) => {
+  //   const updatedCards = cardsData.map((card) =>
+  //     card.id === updatedIssue.id ? updatedIssue : card
+  //   );
+  //   setCardsData(updatedCards);
+  //   setEditingIssue(null);
+  // };
   // اضافة مشكلة جديدة
   const handleAddNewIssue = (newIssue) => {
     setIssues((prevData) => [...prevData, newIssue]);
@@ -159,18 +160,16 @@ function Main({ issues, setIssues }) {
         <div className="flex flex-col gap-4 mt-6">
           {issues.map((card, index) => (
             <Card
-              key={card.id}
-              {...card}
+              key={index}
               title={card.title}
               description={card.description}
               // imageUrl={card.imageUrl}
               status={card.issueStatus}
-
               onEdit={() => setEditingIssue(index)}
               onDelete={() => handleDelete(index)}
               onIncrease={() => handleIncrease(index)}
               onDecrease={() => handleDecrease(index)}
-              count={card.counter}
+              counter={card.counter}
             />
           ))}
         </div>
