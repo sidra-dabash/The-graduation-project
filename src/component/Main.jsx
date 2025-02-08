@@ -122,12 +122,11 @@ function Main({ issues, setIssues }) {
               description={card.description}
               // imageUrl={card.imageUrl}
               status={card.issueStatus}
-              onEdit={() => setEditingIssue(issues[index])}
+              onEdit={() => handleEdit(index)}
               onDelete={() => handleDelete(index)}
               onIncrease={() => handleIncrease(index)}
               onDecrease={() => handleDecrease(index)}
               counter={card.counter}
-              
             />
           ))}
         </div>
