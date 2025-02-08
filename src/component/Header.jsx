@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
 function Header({ onAddNewIssue }) {
+  
   return (
     <>
       <header className="flex flex-wrap items-center justify-between bg-[#8E2571] px-4 py-6 shadow-md">
@@ -29,9 +32,9 @@ function Header({ onAddNewIssue }) {
               Sign Up
             </button>
           </Link>
-          <button className="px-6 py-3 bg-gradient-to-r from-pink-500 to-sky-300 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+          {/* <button className="px-6 py-3 bg-gradient-to-r from-pink-500 to-sky-300 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
             Logout
-          </button>
+          </button> */}
         </div>
       </header>
       <div></div>

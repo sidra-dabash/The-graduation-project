@@ -13,7 +13,7 @@ const AlertMessage = ({ type, message, onClose }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       {/* Modal Container */}
       <div
-       className={`p-6 rounded-lg border-4 shadow-lg max-w-xl w-full ${alertStyles[type]}`}
+        className={`p-6 rounded-lg border-4 shadow-lg max-w-xl w-full ${alertStyles[type]}`}
       >
         {/* Modal Header */}
         <div className="flex justify-between items-center mb-4">
@@ -52,6 +52,7 @@ function NewIssue({ onAddNewIssue }) {
     status: "",
     // imageUrl: "",
   });
+
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -91,11 +92,20 @@ function NewIssue({ onAddNewIssue }) {
           locale: "string",
         },
       };
-      const response = await axios.post(API_URL, data);
+      const token="41967af4467c1bbc90acce69966d94bb83ba76198fb6d030a683a4d0001a65b23bb065d412ee85d1a8db94e5041a3479ae0fe2970aee552c61ab1750fe346f126eb7c4af48d2c453c4301dea84b53b83b4a71c2bf4e32e2eb02aa74e5731ebfd28880060cf7780a103685939dafa62624a502d0f17bbd1d50c7e79de1d8c363d";
+      const response = await axios.post(API_URL, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       // جلب البيانات الجديدة من الاستجابة
       const addedIssue = response.data.data;
-      console.log("onAddNewIssue:", onAddNewIssue);
-      onAddNewIssue(addedIssue);
+      if (onAddNewIssue) {
+        onAddNewIssue(addedIssue); // أضف القضية الجديدة إلى القضايا الموجودة
+      }
+      
+      // console.log("onAddNewIssue:", onAddNewIssue);
+      // onAddNewIssue(addedIssue);
       showMessage("success", "issue added successfully");
       setFormData({ title: "", description: "", status: "" });
     } catch (error) {
@@ -104,7 +114,7 @@ function NewIssue({ onAddNewIssue }) {
   };
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <main>
         <div className="flex justify-center items-center mt-12">
           <form

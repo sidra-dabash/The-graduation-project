@@ -36,7 +36,7 @@ function Card({
           {status}
         </p>
 
-        <div className="flex  items-center gap-2">
+        <div className="flex items-center gap-2">
           <Link to={"/edit-issue"}>
             <button onClick={onEdit} className="text-green-500 hover:underline">
               Edit
@@ -69,41 +69,6 @@ function Card({
 
 function Main({ issues, setIssues }) {
   const headers = ["Title", "description", "Status", "User", "counter"];
-  // const [cardsData, setCardsData] = useState([
-  //   {
-  //     id:1,
-  //     title: "Card 1",
-  //     description: "Description 1",
-  //     // imageUrl: "https://via.placeholder.com/150",
-  //     status: "open",
-  //     count: 0,
-  //   },
-  //   {
-  //     id:2,
-  //     title: "Card 2",
-  //     description: "Description 2",
-  //     // imageUrl: "https://via.placeholder.com/150",
-  //     status: "closed",
-  //     count: 0,
-  //   },
-  //   {
-  //     id:3,
-  //     title: "Card 3",
-  //     description: "Description 3",
-  //     // imageUrl: "https://via.placeholder.com/150",
-  //     status: "inprogress",
-  //     count: 0,
-  //   },
-  //   {
-  //     id:4,
-  //     title: "Card 4",
-  //     description: "Description 4",
-  //     // imageUrl: "https://via.placeholder.com/150",
-  //     status: "inprogress",
-  //     count: 0,
-  //   },
-  // ]);
-
   const handleIncrease = (index) => {
     const updatedCards = [...issues];
     updatedCards[index].counter += 1;
@@ -118,6 +83,10 @@ function Main({ issues, setIssues }) {
       setIssues(updatedCards);
     }
   };
+  const handleAddNewIssue = (newIssue) => {
+    // تحديث قائمة القضايا
+    setIssues((prevIssues) => [...prevIssues, newIssue]);
+  };
 
   const [editingIssue, setEditingIssue] = useState(null);
   const handleEdit = (index) => {
@@ -129,18 +98,6 @@ function Main({ issues, setIssues }) {
     // يجب الحذف من الAPI ايضا
     const updatedCards = issues.filter((_, idx) => idx !== index);
     setIssues(updatedCards);
-  };
-
-  // const handleSaveEdit = (updatedIssue) => {
-  //   const updatedCards = cardsData.map((card) =>
-  //     card.id === updatedIssue.id ? updatedIssue : card
-  //   );
-  //   setCardsData(updatedCards);
-  //   setEditingIssue(null);
-  // };
-  // اضافة مشكلة جديدة
-  const handleAddNewIssue = (newIssue) => {
-    setIssues((prevData) => [...prevData, newIssue]);
   };
   return (
     <>
@@ -155,7 +112,7 @@ function Main({ issues, setIssues }) {
             ))}
           </div>
         </div>
-
+        
         {/* Content Section */}
         <div className="flex flex-col gap-4 mt-6">
           {issues.map((card, index) => (
@@ -165,15 +122,17 @@ function Main({ issues, setIssues }) {
               description={card.description}
               // imageUrl={card.imageUrl}
               status={card.issueStatus}
-              onEdit={() => setEditingIssue(index)}
+              onEdit={() => setEditingIssue(issues[index])}
               onDelete={() => handleDelete(index)}
               onIncrease={() => handleIncrease(index)}
               onDecrease={() => handleDecrease(index)}
               counter={card.counter}
+              
             />
           ))}
         </div>
       </div>
+      <NewIssue onAddNewIssue={handleAddNewIssue} />
     </>
   );
 }
