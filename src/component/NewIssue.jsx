@@ -92,7 +92,11 @@ function NewIssue({ onAddNewIssue }) {
           locale: "string",
         },
       };
-      const token="41967af4467c1bbc90acce69966d94bb83ba76198fb6d030a683a4d0001a65b23bb065d412ee85d1a8db94e5041a3479ae0fe2970aee552c61ab1750fe346f126eb7c4af48d2c453c4301dea84b53b83b4a71c2bf4e32e2eb02aa74e5731ebfd28880060cf7780a103685939dafa62624a502d0f17bbd1d50c7e79de1d8c363d";
+      const token = localStorage.getItem("token");
+      if (!token) {
+        showMessage("error", "Authentication token is missing!");
+        return;
+      }
       const response = await axios.post(API_URL, data, {
         headers: {
           Authorization: `Bearer ${token}`,

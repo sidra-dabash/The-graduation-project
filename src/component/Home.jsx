@@ -23,8 +23,8 @@ function Home() {
         <Header />
         {/* هاد مجرد مكون بعرض نص 
         المكون الي بضيف بيانات NewIssue */}
-        <AddNewIssue/>
-        <Main issues={issues} setIssues={setIssues}/>
+        <AddNewIssue />
+        <Main issues={issues} setIssues={setIssues} />
       </div>
     </>
   );
