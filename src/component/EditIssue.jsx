@@ -1,15 +1,71 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "./Header";
 
 const API_URL = "http://localhost:1337/api/issues";
-function EditIssue({ issue, onClose, onSave }) {
+
+const AlertMessage = ({ type, message, onClose }) => {
+  const alertStyles = {
+    success: "bg-green-50 border-green-500 text-green-700",
+    error: "bg-red-50 border-red-500 text-red-700",
+  };
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div
+        className={`p-6 rounded-lg border-4 shadow-lg max-w-xl w-full ${alertStyles[type]}`}
+      >
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold">
+            {type === "error" ? "Error" : "Success"}
+          </h3>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-800"
+          >
+            ×
+          </button>
+        </div>
+        <div>
+          <p>{message}</p>
+        </div>
+        <div className="mt-4 text-right">
+          <button
+            onClick={onClose}
+            className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+function EditIssue({ onSave }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const issue = location.state?.issue;
+  console.log(issue);
+
   const [formData, setFormData] = useState({
-    title: issue ? issue.title : "",
-    description: issue ? issue.description : "",
-    issueStatus: issue ? issue.issueStatus : "Open",
+    title: issue?.title || "",
+    description: issue?.description || "",
+    issueStatus: issue?.issueStatus || "Open",
   });
+  
+
   const [isLoading, setIsLoading] = useState(false);
+  const [alert, setAlert] = useState({ show: false, type: "", message: "" });
+
+  const showMessage = (type, message) => {
+    setAlert({ show: true, type, message });
+    setTimeout(() => {
+      setAlert({ show: false, type: "", message: "" });
+    }, 3000);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -18,37 +74,27 @@ function EditIssue({ issue, onClose, onSave }) {
     }));
   };
 
-  const handleClose = () => {
-    onClose();
-    setFormData({
-      title: "",
-      description: "",
-      issueStatus: "Open",
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!issue) {
+      showMessage("error", "No issue selected for editing!");
+      return;
+    }
+
     const updateIssue = { ...formData, documentId: issue.documentId };
     setIsLoading(true);
 
     try {
-      const response = await axios.put(
-        `${API_URL}/${issue.documentId}`,
-        updateIssue
-      );
+      const response = await axios.put(`${API_URL}/${issue.documentId}`, updateIssue);
       if (response.status === 200) {
-        onSave(updateIssue);
-        onClose();
-        alert("Issue updated successfully!");
+        onSave(response.data);
+        showMessage("success", "Issue updated successfully");
+        setTimeout(() => navigate("/"), 1000);
       } else {
-        alert("Error: " + response.statusText);
+        showMessage("error", `Error: ${response.statusText}`);
       }
     } catch (error) {
-      alert(
-        "Error updating issue: " +
-          (error.response ? error.response.data : error.message)
-      );
+      showMessage("error", `Error updating issue: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -63,11 +109,10 @@ function EditIssue({ issue, onClose, onSave }) {
             onSubmit={handleSubmit}
             className="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-xl lg:w-[550px] md:h-[500px]"
           >
-            <div>
-              <h1 className="text-center font-bold text-4xl mt-6 text-[#8E2571]">
-                Edit Issue
-              </h1>
-            </div>
+            <h1 className="text-center font-bold text-4xl mt-6 text-[#8E2571]">
+              Edit Issue
+            </h1>
+
             <label htmlFor="title" className="text-[#8E2571] font-bold">
               Title
             </label>
@@ -79,6 +124,7 @@ function EditIssue({ issue, onClose, onSave }) {
               value={formData.title}
               onChange={handleChange}
             />
+
             <label htmlFor="description" className="text-[#8E2571] font-bold">
               Description
             </label>
@@ -90,31 +136,23 @@ function EditIssue({ issue, onClose, onSave }) {
               value={formData.description}
               onChange={handleChange}
             />
-            <div className="flex flex-col w-64 space-y-2 relative">
-              <label htmlFor="status" className="font-bold text-[#8E2571]">
-                Status
-              </label>
-              <div className="relative">
-                <select
-                  name="status"
-                  id="status"
-                  className="bg-pink-100 text-black px-4 py-2 rounded-lg appearance-none w-full focus:outline-none focus:ring-2 focus:ring-gray-500"
-                  value={formData.issueStatus}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="pending" disabled>
-                    Select an option
-                  </option>
-                  <option value="open">Open</option>
-                  <option value="closed">Closed</option>
-                  <option value="in-progress">In Progress</option>
-                </select>
-                <span className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-black">
-                  ▼
-                </span>
-              </div>
-            </div>
+
+            <label htmlFor="status" className="font-bold text-[#8E2571]">
+              Status
+            </label>
+            <select
+              name="issueStatus"
+              id="status"
+              className="bg-pink-100 text-black px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-gray-500"
+              value={formData.issueStatus}
+              onChange={handleChange}
+              required
+            >
+              <option value="open">Open</option>
+              <option value="closed">Closed</option>
+              <option value="in-progress">In Progress</option>
+            </select>
+
             <button
               type="submit"
               className="p-2 mt-3 bg-gradient-to-r from-pink-500 to-sky-300 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
@@ -125,6 +163,13 @@ function EditIssue({ issue, onClose, onSave }) {
           </form>
         </div>
       </main>
+      {alert.show && (
+        <AlertMessage
+          type={alert.type}
+          message={alert.message}
+          onClose={() => setAlert({ show: false, type: "", message: "" })}
+        />
+      )}
     </>
   );
 }
