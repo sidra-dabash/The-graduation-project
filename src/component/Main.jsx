@@ -2,7 +2,17 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-function Card({ title, description, status, counter, onDelete, onIncrease, onDecrease, issue }) {
+const API_URL = "http://localhost:1337/api/issues";
+function Card({
+  title,
+  description,
+  status,
+  counter,
+  onDelete,
+  onIncrease,
+  onDecrease,
+  issue,
+}) {
   return (
     <div className="bg-[#edaedb] w-full flex flex-row justify-between items-center rounded-lg shadow p-4 mb-4 mr-4">
       <div className="flex justify-between flex-1 mx-4">
@@ -21,16 +31,34 @@ function Card({ title, description, status, counter, onDelete, onIncrease, onDec
         </p>
 
         <div className="flex items-center gap-2">
-        <Link to="/edit-issue" state={{issue}}>
+          <Link
+            to="/edit-issue"
+            // ارسال بيانات المشكلة
+            state={{ issue }}
+            onClick={() =>
+              localStorage.setItem("editingIssue", JSON.stringify(issue))}
+          >
             <button className="text-green-500 hover:underline">Edit</button>
           </Link>
-          <button onClick={onDelete} className="text-red-500 hover:underline">Delete</button>
+          <button onClick={onDelete} className="text-red-500 hover:underline">
+            Delete
+          </button>
         </div>
 
         <div className="flex items-center gap-2">
-          <button onClick={onDecrease} className="px-2 py-1 bg-red-500 text-white rounded">-</button>
+          <button
+            onClick={onDecrease}
+            className="px-2 py-1 bg-red-500 text-white rounded"
+          >
+            -
+          </button>
           <span className="font-bold text-lg">{counter}</span>
-          <button onClick={onIncrease} className="px-2 py-1 bg-green-500 text-white rounded">+</button>
+          <button
+            onClick={onIncrease}
+            className="px-2 py-1 bg-green-500 text-white rounded"
+          >
+            +
+          </button>
         </div>
       </div>
     </div>
@@ -38,7 +66,7 @@ function Card({ title, description, status, counter, onDelete, onIncrease, onDec
 }
 
 function Main({ issues, setIssues }) {
-  const headers = ["Title", "Description", "Status","Users", "Counter"];
+  const headers = ["Title", "Description", "Status", "Users", "Counter"];
 
   const handleIncrease = (index) => {
     const updatedIssues = [...issues];
@@ -58,9 +86,27 @@ function Main({ issues, setIssues }) {
     const updatedIssues = issues.filter((_, idx) => idx !== index);
     setIssues(updatedIssues);
   };
+  // const handleDelete = async (index, issueId) => {
+  //   try {
+  //     // إرسال طلب حذف إلى API
+  //     const response = await fetch(`http://localhost:1337/api/issues/${issueId}`, {
+  //       method: "DELETE",
+  //     });
+  
+  //     if (!response.ok) {
+  //       throw new Error("Failed to delete issue from the database");
+  //     }
+  
+  //     // تحديث الحالة بعد حذف المشكلة بنجاح
+  //     const updatedIssues = issues.filter((_, idx) => idx !== index);
+  //     setIssues(updatedIssues);
+  //   } catch (error) {
+  //     console.error("Error deleting issue:", error);
+  //   }
+  // };
+  
   const [editingIssue, setEditingIssue] = useState(null);
   const handleEdit = (index) => {
-    // تحديد المشكلة التيسيتم تعديلها
     setEditingIssue(issues[index]);
   };
 
@@ -84,7 +130,7 @@ function Main({ issues, setIssues }) {
           <Card
             key={index}
             {...issue}
-            status={Card.issueStatus}
+            status={issue.issueStatus}
             onEdit={() => handleEdit(index)}
             onDelete={() => handleDelete(index)}
             onIncrease={() => handleIncrease(index)}
@@ -92,7 +138,6 @@ function Main({ issues, setIssues }) {
           />
         ))}
       </div>
-      {/* <NewIssue onAddNewIssue={handleAddNewIssue} /> */}
     </div>
   );
 }

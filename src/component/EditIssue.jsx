@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "./Header";
+import { useEffect } from "react";
 
 const API_URL = "http://localhost:1337/api/issues";
 
@@ -46,15 +47,25 @@ const AlertMessage = ({ type, message, onClose }) => {
 function EditIssue({ onSave }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const issue = location.state?.issue;
+
+  const storedIssue = localStorage.getItem("editingIssue");
+  const issue =location.state?.issue;
   console.log(issue);
+
+  // const [editingIssue, setEditingIssue] = useState(null);
+
+  // useEffect(() => {
+  //   const savedIssue = localStorage.getItem("editingIssue");
+  //   if (savedIssue) {
+  //     setEditingIssue(JSON.parse(savedIssue));
+  //   }
+  // }, []);
 
   const [formData, setFormData] = useState({
     title: issue?.title || "",
     description: issue?.description || "",
     issueStatus: issue?.issueStatus || "Open",
   });
-  
 
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
@@ -85,13 +96,17 @@ function EditIssue({ onSave }) {
     setIsLoading(true);
 
     try {
-      const response = await axios.put(`${API_URL}/${issue.documentId}`, updateIssue);
+      const response = await axios.put(
+        `${API_URL}/${issue.documentId}`,
+        updateIssue
+      );
       if (response.status === 200) {
-        onSave(response.data);
+        const updatedIssue = await axios.get(`${API_URL}/${issue.documentId}`);
+        setFormData(updatedIssue.data.data);
+        localStorage.setItem("editingIssue", JSON.stringify(updatedIssue.data.data));
+        onSave(updatedIssue.data.data);
         showMessage("success", "Issue updated successfully");
         setTimeout(() => navigate("/"), 1000);
-      } else {
-        showMessage("error", `Error: ${response.statusText}`);
       }
     } catch (error) {
       showMessage("error", `Error updating issue: ${error.message}`);
@@ -137,21 +152,28 @@ function EditIssue({ onSave }) {
               onChange={handleChange}
             />
 
-            <label htmlFor="status" className="font-bold text-[#8E2571]">
-              Status
-            </label>
-            <select
-              name="issueStatus"
-              id="status"
-              className="bg-pink-100 text-black px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-gray-500"
-              value={formData.issueStatus}
-              onChange={handleChange}
-              required
-            >
-              <option value="open">Open</option>
-              <option value="closed">Closed</option>
-              <option value="in-progress">In Progress</option>
-            </select>
+            <div className="flex flex-col w-full space-y-2 relative">
+              <label htmlFor="status" className="font-bold text-[#8E2571]">
+                Status
+              </label>
+              <div className="relative">
+                <select
+                  name="issueStatus"
+                  id="status"
+                  className="bg-pink-100 text-black px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-gray-500 appearance-none"
+                  value={formData.issueStatus}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="open">Open</option>
+                  <option value="closed">Closed</option>
+                  <option value="in-progress">In Progress</option>
+                </select>
+                <span className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-black">
+                  ▼
+                </span>
+              </div>
+            </div>
 
             <button
               type="submit"
@@ -163,6 +185,7 @@ function EditIssue({ onSave }) {
           </form>
         </div>
       </main>
+      
       {alert.show && (
         <AlertMessage
           type={alert.type}
