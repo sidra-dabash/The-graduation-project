@@ -172,7 +172,7 @@ function NewIssue({ onAddNewIssue }) {
             required
           />
 
-          <div className="flex flex-col w-64 space-y-2 relative">
+          <div className="flex flex-col w-full space-y-2 relative">
             <label htmlFor="status" className="font-bold text-[#8E2571]">
               Status
             </label>
@@ -180,7 +180,7 @@ function NewIssue({ onAddNewIssue }) {
               <select
                 name="status"
                 id="status"
-                className="bg-pink-100 text-black px-4 py-2 rounded-lg appearance-none w-[500px] focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className="bg-pink-100 text-black px-4 py-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-gray-500 appearance-none"
                 value={formData.status}
                 onChange={handleChange}
                 required
@@ -192,7 +192,7 @@ function NewIssue({ onAddNewIssue }) {
                 <option value="Closed">Closed</option>
                 <option value="In-progress">In Progress</option>
               </select>
-              <span className="absolute inset-y-0 left-[460px] flex items-center pointer-events-none text-black  ">
+              <span className="absolute inset-y-0 right-4 top-1 flex items-center pointer-events-none text-black  ">
                 ▼
               </span>
             </div>

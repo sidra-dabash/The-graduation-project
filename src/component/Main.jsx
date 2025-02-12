@@ -2,7 +2,9 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const API_URL = "http://localhost:1337/api/issues";
+
 function Card({
   title,
   description,
@@ -12,12 +14,14 @@ function Card({
   onIncrease,
   onDecrease,
   issue,
-}) {
+  onEdit,
+}
+) {
   return (
     <div className="bg-[#edaedb] w-full flex flex-row justify-between items-center rounded-lg shadow p-4 mb-4 mr-4">
       <div className="flex justify-between flex-1 mx-4">
-        <h3 className="text-[#740556] font-bold text-lg">{title}</h3>
-        <p className="text-[#740556]">{description}</p>
+        <h3 className="text-[#740556] font-bold text-lg break-words whitespace-normal max-w-[150px]">{title}</h3>
+        <p className="text-[#740556] break-words whitespace-normal max-w-[200px]">{description}</p>
         <p
           className={`font-semibold ${
             status === "Open"
@@ -35,8 +39,8 @@ function Card({
             to="/edit-issue"
             // ارسال بيانات المشكلة
             state={{ issue }}
-            onClick={() =>
-              localStorage.setItem("editingIssue", JSON.stringify(issue))}
+            // onClick={() =>localStorage.setItem("editingIssue", JSON.stringify(issue))}
+            onClick={onEdit}
           >
             <button className="text-green-500 hover:underline">Edit</button>
           </Link>
@@ -86,33 +90,14 @@ function Main({ issues, setIssues }) {
     const updatedIssues = issues.filter((_, idx) => idx !== index);
     setIssues(updatedIssues);
   };
-  // const handleDelete = async (index, issueId) => {
-  //   try {
-  //     // إرسال طلب حذف إلى API
-  //     const response = await fetch(`http://localhost:1337/api/issues/${issueId}`, {
-  //       method: "DELETE",
-  //     });
-  
-  //     if (!response.ok) {
-  //       throw new Error("Failed to delete issue from the database");
-  //     }
-  
-  //     // تحديث الحالة بعد حذف المشكلة بنجاح
-  //     const updatedIssues = issues.filter((_, idx) => idx !== index);
-  //     setIssues(updatedIssues);
-  //   } catch (error) {
-  //     console.error("Error deleting issue:", error);
-  //   }
-  // };
-  
   const [editingIssue, setEditingIssue] = useState(null);
   const handleEdit = (index) => {
     setEditingIssue(issues[index]);
   };
-
-  // const handleAddNewIssue = (newIssue) => {
-  //   setIssues((prevIssues) => [...prevIssues, newIssue]);
-  // };
+const navigate = useNavigate();
+// const handleEdit = (issue) => {
+//   navigate("/edit", { state: { issue } });
+// };
   return (
     <div className="bg-[#8E2571] mt-8 px-4 py-10 max-w-[1000px] mx-auto">
       <div className="flex justify-center items-center gap-5">
@@ -131,7 +116,7 @@ function Main({ issues, setIssues }) {
             key={index}
             {...issue}
             status={issue.issueStatus}
-            onEdit={() => handleEdit(index)}
+            onEdit={() => handleEdit(issue)}
             onDelete={() => handleDelete(index)}
             onIncrease={() => handleIncrease(index)}
             onDecrease={() => handleDecrease(index)}

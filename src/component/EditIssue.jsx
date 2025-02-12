@@ -45,27 +45,27 @@ const AlertMessage = ({ type, message, onClose }) => {
 };
 
 function EditIssue({ onSave }) {
-  const location = useLocation();
   const navigate = useNavigate();
-
+  const location = useLocation();
   const storedIssue = localStorage.getItem("editingIssue");
-  const issue =location.state?.issue;
-  console.log(issue);
-
-  // const [editingIssue, setEditingIssue] = useState(null);
-
-  // useEffect(() => {
-  //   const savedIssue = localStorage.getItem("editingIssue");
-  //   if (savedIssue) {
-  //     setEditingIssue(JSON.parse(savedIssue));
-  //   }
-  // }, []);
-
+  const issue = location.state?.issue;
+  console.log("Issue from location:", issue);
+  // console.log(issue);
   const [formData, setFormData] = useState({
     title: issue?.title || "",
     description: issue?.description || "",
     issueStatus: issue?.issueStatus || "Open",
   });
+
+  useEffect(() => {
+    if (issue) {
+      setFormData({
+        title: issue.title,
+        description: issue.description,
+        issueStatus: issue.issueStatus,
+      });
+    }
+  }, [issue]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
@@ -87,6 +87,7 @@ function EditIssue({ onSave }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("handleSubmit called")
     if (!issue) {
       showMessage("error", "No issue selected for editing!");
       return;
@@ -98,12 +99,17 @@ function EditIssue({ onSave }) {
     try {
       const response = await axios.put(
         `${API_URL}/${issue.documentId}`,
-        updateIssue
+        updateIssue,
+        updateIssue,
+        { headers: { "Content-Type": "application/json" } }
       );
       if (response.status === 200) {
         const updatedIssue = await axios.get(`${API_URL}/${issue.documentId}`);
         setFormData(updatedIssue.data.data);
-        localStorage.setItem("editingIssue", JSON.stringify(updatedIssue.data.data));
+        localStorage.setItem(
+          "editingIssue",
+          JSON.stringify(updatedIssue.data.data)
+        );
         onSave(updatedIssue.data.data);
         showMessage("success", "Issue updated successfully");
         setTimeout(() => navigate("/"), 1000);
@@ -185,7 +191,7 @@ function EditIssue({ onSave }) {
           </form>
         </div>
       </main>
-      
+
       {alert.show && (
         <AlertMessage
           type={alert.type}
