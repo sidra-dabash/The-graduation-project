@@ -49,7 +49,6 @@ function EditIssue({ onSave }) {
   const location = useLocation();
   const storedIssue = localStorage.getItem("editingIssue");
   const issue = location.state?.issue;
-  console.log("Issue from location:", issue);
   // console.log(issue);
   const [formData, setFormData] = useState({
     title: issue?.title || "",

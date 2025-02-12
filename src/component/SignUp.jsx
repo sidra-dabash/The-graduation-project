@@ -61,7 +61,7 @@ function SignUp() {
       // في حال نجاح الطلب
       if (response.data.jwt) {
         setSuccessMessage("Registration completed successfully!");
-        console.log("User Registered:", response.data);
+        // console.log("User Registered:", response.data);
         localStorage.setItem("jwt", response.data.jwt);
         //تفريغ الفورم عند ارسال البيانات
         setFormData({

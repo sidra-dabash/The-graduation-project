@@ -53,6 +53,7 @@ function NewIssue({ onAddNewIssue }) {
     description: "",
     status: "",
   });
+  // يستخدم لتخزين حالة ظهور الرسالة
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
 
   const handleChange = (e) => {
